@@ -10,13 +10,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
+    
+<div class="container-fluid">
+    <div class="text-right m-3">
+    <img src="static/img/nomina.png" alt="nomina" />
+    </div>
+    <h3 class="text-center">Gestion de Empleados Nómina</h3>
+
+
 
 <div class="row">
     <div class="col-sm-2"></div>
 
     <!-- Contenido inicia -->
     <div class="col-sm-8">
-<h2 >Empleados <button class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal">Agregar Empleado</button></h2>
+<h2 >Empleados <a href="#" class="float-right"><img src="static/img/nomina.png" alt="casa" /></a></h2>
 
 {%with messages = get_flashed_messages()%}
 {%if messages%}
