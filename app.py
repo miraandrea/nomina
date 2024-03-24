@@ -8,30 +8,33 @@ app.secret_key = 'many random bytes'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'M@tech@pp1234'
-app.config['MYSQL_DB'] = 'crud'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'nomina'
 
 mysql = MySQL(app)
 
 @app.route('/')
 def Index():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM students")
+    cur.execute("SELECT * FROM usuarios")
     data = cur.fetchall()
     cur.close()
 
-    return render_template('index.html', students=data)
+    return render_template('index.html', usuarios=data)
 
 
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == "POST":
         flash("Data Inserted Successfully")
-        name = request.form['name']
+        nombre = request.form['nombre']
+        cedula = request.form['cedula']
+        cargo = request.form['cargo']
+        telefono = request.form['telefono']
         email = request.form['email']
-        phone = request.form['phone']
+        salario = request.form['salario']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO students (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
+        cur.execute("INSERT INTO usuarios (nombre, cedula, cargo, telefono, email, salario) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, cedula, cargo, telefono, email, salario))
         mysql.connection.commit()
         return redirect(url_for('Index'))
 
@@ -39,9 +42,9 @@ def insert():
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
+    cur.execute("DELETE FROM usuarios WHERE id=%s", (id_data,))
     mysql.connection.commit()
-    return redirect(url_for('Index'))
+    return redirect(url_for('empleados'))
 
 
 
@@ -49,17 +52,20 @@ def delete(id_data):
 def update():
     if request.method == 'POST':
         id_data = request.form['id']
-        name = request.form['name']
+        nombre = request.form['nombre']
+        cedula = request.form['cedula']
+        cargo = request.form['cargo']
+        telefono = request.form['telefono']
         email = request.form['email']
-        phone = request.form['phone']
+        salario = request.form['salario']
 
         cur = mysql.connection.cursor()
         cur.execute("""
-        UPDATE students SET name=%s, email=%s, phone=%s
+        UPDATE usuarios SET nombre=%s, cedula=%s, cargo=%s, telefono=%s, email=%s, salario=%s
         WHERE id=%s
-        """, (name, email, phone, id_data))
+        """, (nombre, cedula, cargo, telefono, email, salario, id_data))
         flash("Data Updated Successfully")
-        return redirect(url_for('Index'))
+        return redirect(url_for('empleados'))
 
 
 
